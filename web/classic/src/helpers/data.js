@@ -17,10 +17,31 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+function normalizeStoredSystemName(name) {
+  const trimmed = (name || '').trim();
+  if (!trimmed || ['new api', 'newapi', 'new-api'].includes(trimmed.toLowerCase())) {
+    return 'WharfAPI';
+  }
+  return trimmed;
+}
+
+function normalizeStoredLogo(logo) {
+  const trimmed = (logo || '').trim();
+  if (!trimmed) return '/wharf-icon.png?v=2';
+  const path = trimmed.split('?')[0];
+  if (path === '/logo.png' || path === '/favicon.ico' || path.endsWith('/favicon.ico')) {
+    return '/wharf-icon.png?v=2';
+  }
+  return trimmed;
+}
+
 export function setStatusData(data) {
-  localStorage.setItem('status', JSON.stringify(data));
-  localStorage.setItem('system_name', data.system_name);
-  localStorage.setItem('logo', data.logo);
+  const systemName = normalizeStoredSystemName(data.system_name);
+  const logo = normalizeStoredLogo(data.logo);
+  const stored = { ...data, system_name: systemName, logo };
+  localStorage.setItem('status', JSON.stringify(stored));
+  localStorage.setItem('system_name', systemName);
+  localStorage.setItem('logo', logo);
   localStorage.setItem('footer_html', data.footer_html);
   localStorage.setItem('quota_per_unit', data.quota_per_unit);
   // 兼容：保留旧字段，同时写入新的额度展示类型

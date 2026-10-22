@@ -18,8 +18,8 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
 import { HarborScene } from './harbor-scene'
+import { MODEL_MARKS } from './model-marks'
 import { useTranslation } from 'react-i18next'
-import { useStatus } from '@/hooks/use-status'
 import { useSystemConfig } from '@/hooks/use-system-config'
 
 interface MarketingHomeProps {
@@ -27,12 +27,12 @@ interface MarketingHomeProps {
 }
 
 const UPSTREAMS = [
-  { name: 'GPT', vendor: 'OpenAI' },
-  { name: 'Claude', vendor: 'Anthropic' },
-  { name: 'Gemini', vendor: 'Google' },
-  { name: 'Grok', vendor: 'xAI' },
-  { name: 'GLM', vendor: 'Z.ai' },
-  { name: 'DeepSeek', vendor: 'DeepSeek' },
+  { name: 'GPT', vendor: 'OpenAI', wide: false },
+  { name: 'Claude', vendor: 'Anthropic', wide: false },
+  { name: 'Gemini', vendor: 'Google', wide: false },
+  { name: 'Grok', vendor: 'xAI', wide: false },
+  { name: 'GLM', vendor: 'Z.ai', wide: false },
+  { name: 'DeepSeek', vendor: 'DeepSeek AI', wide: true },
 ] as const
 
 const CAPABILITIES = [
@@ -74,44 +74,47 @@ function ArrowIcon() {
 
 export function MarketingHome(props: MarketingHomeProps) {
   const { t } = useTranslation()
-  const { status } = useStatus()
   const { systemName } = useSystemConfig()
-  const docsUrl =
-    (status?.docs_link as string | undefined) || 'https://docs.newapi.pro'
-  const docsExternal = docsUrl.startsWith('http')
-  const brand = systemName || 'New API'
+  const brand = systemName || 'WharfAPI'
   const year = new Date().getFullYear()
   const primaryTo = props.isAuthenticated ? '/dashboard' : '/sign-up'
   const loop = [...UPSTREAMS, ...UPSTREAMS]
-
-  const docsLink = docsExternal ? (
-    <a
-      className='wharf-quiet-link'
-      href={docsUrl}
-      target='_blank'
-      rel='noopener noreferrer'
-    >
-      {t('Integration docs')}
-    </a>
-  ) : (
-    <Link className='wharf-quiet-link' to={docsUrl}>
-      {t('Integration docs')}
-    </Link>
-  )
-
-  const footerDocs = docsExternal ? (
-    <a href={docsUrl} target='_blank' rel='noopener noreferrer'>
-      {t('Docs')}
-    </a>
-  ) : (
-    <Link to={docsUrl}>{t('Docs')}</Link>
-  )
 
   return (
     <div className='wharf-home'>
       <section className='wharf-hero' aria-labelledby='home-title'>
         <div className='wharf-stage'>
           <HarborScene />
+          <div className='wharf-mark'>
+            <svg
+              className='wharf-mark-logo'
+              viewBox='0 0 160 156'
+              aria-hidden='true'
+            >
+              <path fill='#fff' d='M80 2l6 13H74L80 2z' />
+              <path
+                fill='#fff'
+                fillRule='evenodd'
+                d='M67 15h26v20H67V15zm4 3h4v14h-4V18zm7 0h4v14h-4V18zm7 0h4v14h-4V18z'
+              />
+              <path fill='#fff' d='M61 35h38v5H61z' />
+              <path
+                fill='#fff'
+                fillRule='evenodd'
+                d='M71 40l-6 68h30l-6-68H71zm7 38h6v18h-6V78z'
+              />
+              <path
+                fill='#fff'
+                d='M16 112c18-16 30-12 42-2 9 8 14 6 22-2 9-9 18-12 30-5 16 9 24 5 36-6 9-8 18-7 26 3 3 5 1 11-5 12H14c-7-5-4-12 2 0z'
+              />
+              <path
+                fill='#fff'
+                d='M4 130c22-12 36-2 50 8 12 8 20 5 30-2 13-9 24-7 38 2 13 8 22 5 34-3 5 7 2 12-5 12H6c-8-5-6-15-2-17z'
+              />
+            </svg>
+            <p className='wharf-mark-name'>wharfapi.com</p>
+            <p className='wharf-mark-tag'>YOUR API TRANSFER STATION</p>
+          </div>
           <div className='wharf-hero-copy'>
             <h1 id='home-title'>{t('One interface for mainstream models')}</h1>
             <div className='wharf-hero-actions'>
@@ -142,11 +145,9 @@ export function MarketingHome(props: MarketingHomeProps) {
           <li>{t('Channel routing')}</li>
           <li>{t('Usage-based billing')}</li>
         </ul>
-        {docsLink}
       </section>
 
       <section className='wharf-section wharf-models' aria-labelledby='home-models-title'>
-        <p className='wharf-kicker'>{t('Upstreams')}</p>
         <h2 id='home-models-title'>
           {t('Switch models without rewriting the client')}
         </h2>
@@ -157,12 +158,22 @@ export function MarketingHome(props: MarketingHomeProps) {
         </p>
         <div className='wharf-model-panel'>
           <ul className='wharf-model-list'>
-            {UPSTREAMS.map((model) => (
-              <li key={model.name}>
-                <span className='wharf-model-name'>{model.name}</span>
-                <span className='wharf-model-vendor'>{model.vendor}</span>
-              </li>
-            ))}
+            {UPSTREAMS.map((model) => {
+              const Mark = MODEL_MARKS[model.name]
+              return (
+                <li key={model.name}>
+                  <span
+                    className={
+                      model.wide ? 'wharf-model-mark is-wide' : 'wharf-model-mark'
+                    }
+                  >
+                    <Mark />
+                  </span>
+                  <span className='wharf-model-name'>{model.name}</span>
+                  <span className='wharf-model-vendor'>{model.vendor}</span>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </section>
@@ -215,7 +226,6 @@ export function MarketingHome(props: MarketingHomeProps) {
       <footer className='wharf-footer'>
         <Link to='/'>{brand}</Link>
         <nav aria-label='Footer'>
-          {footerDocs}
           <Link to='/pricing'>{t('Pricing')}</Link>
           <Link to='/about'>{t('About')}</Link>
           <Link to={props.isAuthenticated ? '/dashboard' : '/sign-in'}>

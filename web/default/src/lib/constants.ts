@@ -21,8 +21,32 @@ For commercial licensing, please contact support@quantumnous.com
  */
 
 // System Configuration Defaults
-export const DEFAULT_SYSTEM_NAME = 'New API'
-export const DEFAULT_LOGO = '/logo.png'
+export const DEFAULT_SYSTEM_NAME = 'WharfAPI'
+export const DEFAULT_LOGO = '/wharf-icon.png?v=2'
+
+const LEGACY_SYSTEM_NAMES = new Set(['new api', 'newapi', 'new-api'])
+
+export function normalizeSystemName(name?: string | null): string {
+  const trimmed = (name ?? '').trim()
+  if (!trimmed || LEGACY_SYSTEM_NAMES.has(trimmed.toLowerCase())) {
+    return DEFAULT_SYSTEM_NAME
+  }
+  return trimmed
+}
+
+export function normalizeLogo(logo?: string | null): string {
+  const trimmed = (logo ?? '').trim()
+  if (!trimmed) return DEFAULT_LOGO
+  const path = trimmed.split('?')[0]
+  if (
+    path === '/logo.png' ||
+    path === '/favicon.ico' ||
+    path.endsWith('/favicon.ico')
+  ) {
+    return DEFAULT_LOGO
+  }
+  return trimmed
+}
 
 // LocalStorage Keys
 export const STORAGE_KEYS = {

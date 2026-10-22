@@ -18,13 +18,16 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
   --wharf-panel: rgba(244, 248, 251, 0.92);
   --wharf-display: "Bodoni 72", Didot, "Bodoni MT", "Songti SC", "Songti TC",
     "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", Georgia, serif;
-  --background: #0b6294;
+  --background: #071e46;
   --foreground: #f4f8fb;
+  --muted: rgba(244, 248, 251, 0.1);
   --muted-foreground: rgba(244, 248, 251, 0.74);
   --border: rgba(244, 248, 251, 0.22);
   --primary: #f4f8fb;
   --primary-foreground: #0a315c;
-  --card: #f4f8fb;
+  --secondary: rgba(244, 248, 251, 0.12);
+  --secondary-foreground: #f4f8fb;
+  --card: rgba(244, 248, 251, 0.94);
   --card-foreground: #12324c;
   --popover: #f4f8fb;
   --popover-foreground: #12324c;
@@ -32,8 +35,107 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
   --accent-foreground: #f4f8fb;
   --ring: rgba(244, 248, 251, 0.4);
   --input: rgba(244, 248, 251, 0.28);
+  --sidebar: #061833;
+  --sidebar-foreground: #f4f8fb;
+  --sidebar-primary: #f4f8fb;
+  --sidebar-primary-foreground: #0a315c;
+  --sidebar-accent: rgba(244, 248, 251, 0.1);
+  --sidebar-accent-foreground: #f4f8fb;
+  --sidebar-border: rgba(244, 248, 251, 0.14);
+  --sidebar-ring: rgba(244, 248, 251, 0.4);
   background: #071e46;
   color: var(--wharf-foam);
+  min-height: 100svh;
+}
+
+.wharf-app,
+body:has(.wharf-app) {
+  background: #071e46;
+}
+
+.wharf-header-bar {
+  background: var(--wharf-sky);
+  color: var(--wharf-foam);
+}
+
+.wharf-editorial :is(h1, h2) {
+  font-family: var(--wharf-display);
+}
+
+.wharf-editorial :is(
+  .bg-card,
+  div.rounded-xl.border,
+  aside.rounded-xl.border,
+  section.rounded-xl.border,
+  div.rounded-lg.border,
+  section.rounded-lg.border
+) {
+  background-color: rgba(244, 248, 251, 0.94);
+  color: var(--wharf-ink);
+  --background: #f4f8fb;
+  --foreground: var(--wharf-ink);
+  --card-foreground: var(--wharf-ink);
+  --muted: rgba(18, 50, 76, 0.08);
+  --muted-foreground: var(--wharf-ink-3);
+  --primary: #0a315c;
+  --primary-foreground: var(--wharf-foam);
+  --secondary: rgba(18, 50, 76, 0.06);
+  --secondary-foreground: var(--wharf-ink);
+  --accent: rgba(18, 50, 76, 0.06);
+  --accent-foreground: var(--wharf-ink);
+  --border: rgba(18, 50, 76, 0.12);
+  --input: rgba(18, 50, 76, 0.16);
+  --ring: rgba(10, 49, 92, 0.28);
+}
+
+.wharf-editorial input:not([type='checkbox']):not([type='radio']),
+.wharf-editorial textarea,
+.wharf-editorial select {
+  background-color: #f4f8fb;
+  color: var(--wharf-ink);
+  border-color: rgba(18, 50, 76, 0.16);
+}
+
+.wharf-editorial input::placeholder,
+.wharf-editorial textarea::placeholder {
+  color: var(--wharf-ink-3);
+}
+
+.wharf-editorial header.sticky {
+  background: var(--wharf-sky);
+  color: var(--wharf-foam);
+}
+
+.wharf-auth-brand,
+.wharf-auth-brand h1 {
+  color: var(--wharf-foam);
+  font-family: var(--wharf-display);
+}
+
+.wharf-auth-card {
+  border: 1px solid rgba(244, 248, 251, 0.4);
+  border-radius: 28px;
+  background: rgba(244, 248, 251, 0.94);
+  color: var(--wharf-ink);
+  --background: #f4f8fb;
+  --foreground: var(--wharf-ink);
+  --muted: rgba(18, 50, 76, 0.08);
+  --muted-foreground: var(--wharf-ink-3);
+  --primary: #0a315c;
+  --primary-foreground: var(--wharf-foam);
+  --border: rgba(18, 50, 76, 0.14);
+  --input: rgba(18, 50, 76, 0.16);
+  --ring: rgba(10, 49, 92, 0.28);
+  box-shadow: 0 22px 60px rgba(6, 24, 48, 0.28);
+}
+
+.wharf-auth-card :is(h1, h2) {
+  font-family: var(--wharf-display);
+  color: var(--wharf-ink);
+}
+
+.wharf-auth-card a {
+  color: #0b6294;
 }
 
 .wharf-editorial-header {
@@ -71,6 +173,50 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
   container-type: inline-size;
   flex: none;
   align-self: start;
+}
+
+.wharf-mark {
+  position: absolute;
+  top: 4.4%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 92%;
+  transform: translateX(-50%);
+  color: #fff;
+  pointer-events: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wharf-mark-logo {
+  display: block;
+  width: 8.6cqw;
+  height: auto;
+}
+
+.wharf-mark-name {
+  margin: 0.9cqw 0 0;
+  color: #fff;
+  font-family: "Avenir Next", "SF Pro Rounded", "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: clamp(18px, 3.22cqw, 124px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.wharf-mark-tag {
+  margin: 0.95cqw 0 0;
+  color: #fff;
+  font-family: "Avenir Next", "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: clamp(8px, 0.74cqw, 28px);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  line-height: 1;
+  text-indent: 0.32em;
 }
 
 .wharf-hero-copy {
@@ -227,20 +373,6 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
   backdrop-filter: blur(8px);
 }
 
-.wharf-quiet-link {
-  display: inline-flex;
-  margin-top: 12px;
-  color: rgba(244, 248, 251, 0.82);
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  text-shadow: 0 6px 14px rgba(4, 30, 64, 0.35);
-}
-
-.wharf-quiet-link:hover {
-  color: var(--wharf-foam);
-}
-
 .wharf-harbor {
   position: absolute;
   inset: 0;
@@ -322,6 +454,7 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
 }
 
 .wharf-models h2 {
+  margin-top: 0;
   font-size: clamp(32px, 4vw, 52px);
 }
 
@@ -360,6 +493,26 @@ complete. Taller screens reveal the next section; very wide ones scroll a little
   display: grid;
   justify-items: center;
   gap: 8px;
+}
+
+.wharf-model-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 2px;
+  color: #111111;
+}
+
+.wharf-model-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wharf-model-mark.is-wide svg {
+  transform: scale(1.25);
 }
 
 .wharf-model-name {

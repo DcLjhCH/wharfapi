@@ -21,8 +21,10 @@ import {
   Box,
   CreditCard,
   FileText,
+  Frame,
   FlaskConical,
   Key,
+  Gauge,
   LayoutDashboard,
   ListTodo,
   MessageSquare,
@@ -75,9 +77,19 @@ export function useSidebarData(): SidebarData {
             icon: Activity,
           },
           {
+            title: t('Infinite Canvas'),
+            url: '/canvas',
+            icon: Frame,
+          },
+          {
             title: t('Dashboard'),
             url: '/dashboard/models',
             icon: LayoutDashboard,
+          },
+          {
+            title: t('Group Status'),
+            url: '/group-status',
+            icon: Gauge,
           },
           {
             title: t('API Keys'),

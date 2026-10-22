@@ -35,11 +35,12 @@ type PublicLayoutProps = {
 }
 
 export function PublicLayout(props: PublicLayoutProps) {
+  const variant = props.variant ?? 'editorial'
   return (
     <div
       className={cn(
         'bg-background text-foreground relative min-h-svh overflow-x-clip',
-        props.variant === 'editorial' && 'wharf-editorial'
+        variant === 'editorial' && 'wharf-editorial'
       )}
     >
       <PublicHeader
@@ -51,7 +52,7 @@ export function PublicLayout(props: PublicLayoutProps) {
         logo={props.logo}
         siteName={props.siteName}
         {...props.headerProps}
-        variant={props.variant}
+        variant={variant}
       />
 
       {props.showMainContainer !== false ? (

@@ -98,6 +98,10 @@ export function SidebarModulesSection({
         title: t('Dashboard'),
         description: t('Aggregated usage metrics and trend charts.'),
       },
+      group_status: {
+        title: t('Group Status'),
+        description: t('Recent availability and response time by group'),
+      },
       token: {
         title: t('Token management'),
         description: t('Create, revoke, and audit API tokens.'),

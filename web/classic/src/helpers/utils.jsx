@@ -46,16 +46,30 @@ export function isRoot() {
   return user.role >= 100;
 }
 
+function normalizeSystemName(name) {
+  const trimmed = (name || '').trim();
+  if (!trimmed || ['new api', 'newapi', 'new-api'].includes(trimmed.toLowerCase())) {
+    return 'WharfAPI';
+  }
+  return trimmed;
+}
+
+function normalizeLogo(logo) {
+  const trimmed = (logo || '').trim();
+  if (!trimmed) return '/wharf-icon.png?v=2';
+  const path = trimmed.split('?')[0];
+  if (path === '/logo.png' || path === '/favicon.ico' || path.endsWith('/favicon.ico')) {
+    return '/wharf-icon.png?v=2';
+  }
+  return trimmed;
+}
+
 export function getSystemName() {
-  let system_name = localStorage.getItem('system_name');
-  if (!system_name) return 'New API';
-  return system_name;
+  return normalizeSystemName(localStorage.getItem('system_name'));
 }
 
 export function getLogo() {
-  let logo = localStorage.getItem('logo');
-  if (!logo) return '/logo.png';
-  return logo;
+  return normalizeLogo(localStorage.getItem('logo'));
 }
 
 export function getUserIdFromLocalStorage() {

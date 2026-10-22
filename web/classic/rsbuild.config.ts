@@ -55,6 +55,7 @@ export default defineConfig(({ envMode }) => {
     },
     html: {
       template: './index.html',
+      favicon: './public/wharf-icon.png',
     },
     server: {
       host: '0.0.0.0',

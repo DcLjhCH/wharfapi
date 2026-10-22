@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils'
 import { useNotifications } from '@/hooks/use-notifications'
 import { useSystemConfig } from '@/hooks/use-system-config'
 import { useTopNavLinks } from '@/hooks/use-top-nav-links'
+import { publicDownloadNavLinks } from '@/features/home/download-nav'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog } from '@/components/dialog'
@@ -63,7 +64,7 @@ export interface PublicHeaderProps {
 export function PublicHeader(props: PublicHeaderProps) {
   const {
     navLinks = defaultTopNavLinks,
-    showThemeSwitch = true,
+    showThemeSwitch: showThemeSwitchProp,
     showLanguageSwitcher = true,
     logo: customLogo,
     siteName: customSiteName,
@@ -73,6 +74,7 @@ export function PublicHeader(props: PublicHeaderProps) {
     variant = 'default',
   } = props
   const editorial = variant === 'editorial'
+  const showThemeSwitch = showThemeSwitchProp ?? !editorial
 
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -97,7 +99,10 @@ export function PublicHeader(props: PublicHeaderProps) {
   const user = auth.user
   const isAuthenticated = !!user
   const displaySiteName = customSiteName || systemName
-  const links = dynamicLinks.length > 0 ? dynamicLinks : navLinks
+  const links = [
+    ...(dynamicLinks.length > 0 ? dynamicLinks : navLinks),
+    ...publicDownloadNavLinks,
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -179,8 +184,7 @@ export function PublicHeader(props: PublicHeaderProps) {
       <header
         className={cn(
           'pointer-events-none fixed inset-x-0 top-0 z-50',
-          editorial &&
-            'wharf-editorial-header border-border bg-background border-b'
+          editorial && 'wharf-editorial-header wharf-header-bar border-b'
         )}
       >
         <div
@@ -197,7 +201,7 @@ export function PublicHeader(props: PublicHeaderProps) {
             className={cn(
               'transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]',
               editorial
-                ? 'grid h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center bg-background px-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:px-8'
+                ? 'wharf-header-bar grid h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center px-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:px-8'
                 : 'flex items-center justify-between',
               !editorial &&
                 (scrolled
@@ -248,24 +252,24 @@ export function PublicHeader(props: PublicHeaderProps) {
               <div
                 className={cn(
                   'flex items-center',
-                  editorial ? 'justify-center gap-7' : 'gap-0.5'
+                  editorial ? 'justify-center gap-3 xl:gap-5' : 'gap-0.5'
                 )}
               >
               {links.map((link, i) => {
                 const isActive = pathname === link.href
-                if (link.external) {
+                if (link.external || link.href.includes('#')) {
                   return (
                     <a
                       key={i}
                       href={link.href}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
                       aria-disabled={link.disabled}
                       tabIndex={link.disabled ? -1 : undefined}
                       onClick={(event) => handleNavLinkClick(event, link)}
                       className={cn(
                         editorial
-                          ? 'px-0 py-1 text-[15px] font-semibold transition-colors'
+                          ? 'px-0 py-1 text-[13px] font-semibold whitespace-nowrap transition-colors xl:text-[15px]'
                           : 'text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-200',
                         editorial &&
                           (isActive
@@ -286,7 +290,7 @@ export function PublicHeader(props: PublicHeaderProps) {
                     onClick={(event) => handleNavLinkClick(event, link)}
                     className={cn(
                       editorial
-                        ? 'px-0 py-1 text-[15px] font-semibold transition-colors'
+                        ? 'px-0 py-1 text-[13px] font-semibold whitespace-nowrap transition-colors xl:text-[15px]'
                         : 'rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-200',
                       isActive
                         ? 'text-foreground'
@@ -439,13 +443,13 @@ export function PublicHeader(props: PublicHeaderProps) {
               const transitionStyle = {
                 transitionDelay: mobileOpen ? `${100 + i * 50}ms` : '0ms',
               }
-              if (link.external) {
+              if (link.external || link.href.includes('#')) {
                 return (
                   <a
                     key={i}
                     href={link.href}
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
                     aria-disabled={link.disabled}
                     tabIndex={link.disabled ? -1 : undefined}
                     onClick={(event) => handleNavLinkClick(event, link, true)}

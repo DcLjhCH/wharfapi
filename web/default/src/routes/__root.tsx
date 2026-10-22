@@ -47,6 +47,7 @@ function RootComponent() {
 
   return (
     <ThemeCustomizationProvider>
+      <div className='wharf-editorial wharf-app'>
       <NavigationProgress />
       <Outlet />
       <Toaster closeButton duration={5000} position='top-center' richColors />
@@ -56,6 +57,7 @@ function RootComponent() {
           <TanStackRouterDevtools position='bottom-right' />
         </>
       )}
+      </div>
     </ThemeCustomizationProvider>
   )
 }
